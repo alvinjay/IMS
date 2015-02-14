@@ -19,5 +19,8 @@ module.exports = {
             process.env.MONGOHQ_URL ||
             process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
             'mongodb://alvinjay:walakokabalo@ds045001.mongolab.com:45001/mongo-sp'
-  }
+  },
+
+  seedDB: true
+
 };
