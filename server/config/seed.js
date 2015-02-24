@@ -5,8 +5,10 @@
 
 'use strict';
 
-var Thing = require('../api/thing/thing.model');
-var User = require('../api/user/user.model');
+var Thing = require('../api/thing/thing.model'),
+    User = require('../api/user/user.model'),
+    Incident = require('../api/incident/incident.model'),
+    Officer = require('../api/officer/officer.model');
 
 Thing.find({}).remove(function() {
   Thing.create({
@@ -44,6 +46,70 @@ User.find({}).remove(function() {
     password: 'admin'
   }, function() {
       console.log('finished populating users');
+    }
+  );
+});
+
+Incident.find({}).remove(function() {
+  Incident.create({
+      id: '1',
+      type: 'Theft',
+      sender: {
+        name: 'Alvin Jay',
+        contact: '09123456789'
+      },
+      location: {
+        type: "Point",
+        coordinates: [125.49925088882446,7.10698777582003]
+      },
+      timestamp: 1419831587298,
+      attachment: {
+        img: ''
+      }
+    },{
+      id: '2',
+      type: 'Murder',
+      sender: {
+        name: 'Louie',
+        contact: '09987654321'
+      },
+      location: {
+        type: "Point",
+        coordinates: [125.49845695495605,7.100637151448285]
+      },
+      timestamp: 1419831587100,
+      attachment: {
+        img: ''
+      }
+    }, function() {
+      console.log('finished populating incidents');
+    }
+  );
+});
+
+Officer.find({}).remove(function() {
+  Officer.create({
+      id: '0000',
+      name: 'Alvin Jay Cosare',
+      areaCode: '04'
+    },{
+      id: '0001',
+      name: 'Ariette June Guillermo',
+      areaCode: '11'
+    },{
+      id: '0002',
+      name: 'Louie Riños',
+      areaCode: '03'
+    },{
+      id: '0003',
+      name: 'Gabriel Lagmay',
+      areaCode: '08'
+    },{
+      id: '0004',
+      name: 'Marie Beth Venice Cosare',
+      areaCode: '04'
+    },function() {
+      console.log('finished populating officers');
     }
   );
 });
