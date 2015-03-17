@@ -144,7 +144,7 @@
 (function() {
   'use strict';
 
-  angular.module('angular-mapbox').directive('mapbox', function($compile, $q, mapboxService) {
+  angular.module('angular-mapbox').directive('mapbox', function($rootScope, $compile, $q, mapboxService) {
     var _mapboxMap;
 
     return {
@@ -153,7 +153,21 @@
       scope: true,
       replace: true,
       link: function(scope, element, attrs) {
-        scope.map = L.mapbox.map(element[0], attrs.mapId);
+        var tileOptions = {
+          attribution: "Alvin Gwapo",
+          reuseTiles: true,
+          format: 'png32'
+        };
+        var mapOptions = {
+          tileLayer: tileOptions,
+          minZoom: 13,
+          attributionControl: false,
+          zoomControl: false,
+          legendControl: {
+            position: "bottomleft"
+          }
+        };
+        scope.map = L.mapbox.map(element[0], attrs.mapId, mapOptions);
         _mapboxMap.resolve(scope.map);
         var mapOptions = {
           clusterMarkers: attrs.clusterMarkers !== undefined,
@@ -161,6 +175,7 @@
           scaleToFitAll: attrs.scaleToFit === 'all'
         };
         mapboxService.addMapInstance(scope.map, mapOptions);
+
 
         var mapWidth = attrs.width || 500;
         var mapHeight = attrs.height || 500;
@@ -171,6 +186,10 @@
         if(attrs.lat && attrs.lng) {
           scope.map.setView([attrs.lat, attrs.lng], zoom);
         }
+
+        scope.map.whenReady(function(map){
+          $rootScope.$broadcast('map.is.ready', { map: scope.map});
+        });
 
         if(attrs.onReposition) {
           scope.map.on('dragend', function() {

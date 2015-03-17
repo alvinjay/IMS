@@ -4,8 +4,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var IncidentSchema = new Schema({
-  id: String,
-  officerId: String,
+  id: {
+    type:String,
+    unique: true
+  },
+  _officer: {type: Schema.Types.ObjectId, ref: 'Officer'},
   type: String,
   sender: {name: String, contact: String},
   location: {
@@ -18,7 +21,9 @@ var IncidentSchema = new Schema({
     coordinates: [Number]
   },
   timestamp: Number,
-  attachment: {img: String}
+  attachment: {img: String},
+  notes: [String],
+  documents: [String]
 });
 
 module.exports = mongoose.model('Incident', IncidentSchema);

@@ -6,9 +6,10 @@ var mongoose = require('mongoose'),
 var OfficerSchema = new Schema({
   id: String,
   name: String,
-  areaCode: String,
+  station: String,
   picture: String,
-  contact: String
+  contact: String,
+  incidents: [{ type: Schema.Types.ObjectId, ref: 'Incident' }]
 });
 
 module.exports = mongoose.model('Officer', OfficerSchema);

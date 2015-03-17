@@ -10,19 +10,23 @@
 'use strict';
 
 var _ = require('lodash');
-var Officer = require('./officer.model');
+var Officer = require('./officer.model'),
+    Incident = require('../incident/incident.model');
 
-// Get list of Officers
+// Get list of Officers(populated w/ incidents)
 exports.index = function(req, res) {
-  Officer.find(function (err, Officers) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, Officers);
-  });
+  Officer
+    .find()
+    .populate('incidents')
+    .exec(function (err, Officers) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, Officers);
+    });
 };
 
 // Get a single Officer
 exports.show = function(req, res) {
-  Officer.findById(req.params.id, function (err, Officer) {
+  Officer.find({id: req.params.id}, function (err, Officer) {
     if(err) { return handleError(res, err); }
     if(!Officer) { return res.send(404); }
     return res.json(Officer);
